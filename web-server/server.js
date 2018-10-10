@@ -36,11 +36,14 @@ hbs.registerHelper('screamIt', (text) => {
 });
 
 app.get('/', (req, res) => {
-    //res.send('<h1>Hello Express</h1>');
-    res.render('home.hbs', {
-        pageTitle: 'Home Page',
-        message: 'Welcome!'
-    })
+    res.status(200).send({
+        message: 'Hello World!',
+        name: 'Todo App 1.0'
+    });
+    // res.render('home.hbs', {
+    //     pageTitle: 'Home Page',
+    //     message: 'Welcome!'
+    // })
 });
 
 app.get('/about', (req, res) => {
@@ -55,6 +58,19 @@ app.get('/bad', (req, res) => {
     });
 });
 
+app.get('/users', (req, res) => {
+    res.send([{
+        name: 'Vincent',
+        age: 27
+    },
+    {
+        name: 'Jacques',
+        age: 30
+    }]);
+});
+
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 });
+
+module.exports.app = app;
