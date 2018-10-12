@@ -29,7 +29,6 @@ app.post('/todos', (req, res) => {
 
 // GET ALL
 app.get('/todos', (req, res) => {
-    console.log('@@ 100 @@');
     Todo.find().then((todos) => {
         res.status(200).send({todos});
     }, (error) => {
@@ -83,10 +82,10 @@ app.patch('/todos/:id', (req,res) => {
         body.completedAt = null;
     }
     Todo.findOneAndUpdate(id, { $set: body }, { new: true }).then((todo) => {
-        if (!todo){
+        if (!todo) {
             return res.status(404).send();
         }
-        res.status(200).send({todo:todo});
+        res.status(200).send({todo});
     }).catch((err) => {
         res.status(400).send()
     });
