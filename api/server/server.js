@@ -10,6 +10,7 @@ const { ObjectID } = require('mongodb');
 const { mongoose } = require('./mongoose/mongoose');
 const { Todo } = require('./models/todo');
 const { User } = require('./models/user');
+const { authenticate } = require('./middleware/authenticate');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -32,7 +33,6 @@ app.post('/todos', (req, res) => {
 
 // GET ALL
 app.get('/todos', (req, res) => {
-    console.log('tesststststst');
     Todo.find().then((todos) => {
         res.status(200).send({todos});
     }, (error) => {
@@ -97,14 +97,10 @@ app.patch('/todos/:id', (req, res) => {
 
 /* --- --- USER --- --- */
 
-// POST /users
+// POST
 app.post('/users', (req, res) => {
-    console.log(req.body);
     const body = _.pick(req.body, ['email', 'password']);
-    console.log(body);
     let user = new User(body);
-    console.log(user);
-
     user.save().then(() => {
         return user.generateAuthToken();
     }).then((token) => {
@@ -113,6 +109,11 @@ app.post('/users', (req, res) => {
         res.status(400).send(error);
     });
 });
+
+// GET MYSELF
+app.get('/users/me', authenticate, (req, res) => {
+    res.send(req.user);
+})
 
 app.listen(port, () => {
     console.log(`Server is up on port ${port}`);
