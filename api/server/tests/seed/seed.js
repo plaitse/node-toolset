@@ -1,6 +1,8 @@
+// Library imports
 const {ObjectID} = require('mongodb');
 const jwt = require('jsonwebtoken');
 
+// Local imports
 const {Todo} = require('./../../models/todo');
 const {User} = require('./../../models/user');
 
